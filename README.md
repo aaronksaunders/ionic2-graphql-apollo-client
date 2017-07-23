@@ -1,6 +1,6 @@
-This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
+This is a starter project for [Ionic 2](http://ionicframework.com/docs/) with [GraphQL](http://graphql.org/) 
 
- [GraphQL](http://graphql.org/) It is a sample application integrating Ionic2 with GraphQL using the [Apollo Client for Angular2](http://dev.apollodata.com/angular2/)
+This sample application integrating Ionic2 with GraphQL using the [Apollo Client for Angular2](http://dev.apollodata.com/angular2/)
 
 
 ## GraphQL Server
