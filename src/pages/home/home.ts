@@ -20,6 +20,9 @@ const addUser = gql`
   mutation addUser($first_name:String!, $last_name:String!, $email:String!) {
     addUser(first_name: $first_name, last_name: $last_name, email: $email) {
       id
+      first_name
+      last_name
+      email
     }
   }
 `;
@@ -38,7 +41,7 @@ const deleteUser = gql`
 })
 export class HomePage implements OnInit {
   title = 'app';
-  model = {};
+  model: any = {};
   allUsers: ApolloQueryObservable<any>;
 
   constructor(public navCtrl: NavController, private apollo: Apollo) {
@@ -49,8 +52,6 @@ export class HomePage implements OnInit {
     this.allUsers = this
       .apollo
       .watchQuery({ query: AllUsers });
-
-    this.allUsers.subscribe(() => { })
   }
 
 
@@ -59,11 +60,23 @@ export class HomePage implements OnInit {
 
     this.apollo.mutate({
       mutation: deleteUser,
-      variables: { id: _id }
-    }).subscribe(({ data }) => {
-      console.log('got data', data);
+      variables: { id: _id },
 
-      this.allUsers.refetch();
+
+      // this will provide an update of the main AllUsers
+      // query so the list gets updated...
+      updateQueries: {
+        AllUsers: (prev, { mutationResult }) => {
+          const deletedUser = mutationResult.data.deleteUser;
+          const prevAllUsers = prev.allUsers;
+
+          return {
+            allUsers: prevAllUsers.filter((u) => { return u.id !== deletedUser.id })
+          };
+        },
+      },
+    }).subscribe(({ data }) => {
+      console.log('got data: deleted user', data);
 
     }, (error) => {
       console.log('there was an error sending the query', error);
@@ -76,11 +89,22 @@ export class HomePage implements OnInit {
 
     this.apollo.mutate({
       mutation: addUser,
-      variables: this.model
+      variables: this.model,
+
+      // this will provide an update of the main AllUsers
+      // query so the list gets updated...
+      updateQueries: {
+        AllUsers: (prev, { mutationResult }) => {
+          const newUser = mutationResult.data.addUser;
+          const prevAllUsers = prev.allUsers;
+
+          return {
+            allUsers: [...prevAllUsers, newUser]
+          };
+        },
+      },
     }).subscribe(({ data }) => {
       console.log('got data', data);
-
-      this.allUsers.refetch();
 
     }, (error) => {
       console.log('there was an error sending the query', error);
