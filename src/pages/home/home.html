@@ -7,8 +7,30 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+
+  <form #userForm="ngForm" padding>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>First Name</ion-label>
+        <ion-input type="text" required [(ngModel)]="model.first_name" name="first_name" id="first_name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Last Name</ion-label>
+        <ion-input type="text" required [(ngModel)]="model.last_name" name="last_name" id="last_name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating> Email Address </ion-label>
+        <ion-input type="email" [(ngModel)]="model.email" name="email" id="email" email></ion-input>
+      </ion-item>
+    </ion-list>
+    <div padding>
+      <button ion-button (click)="addUserClicked()" [disabled]="!userForm.valid">Add User</button>
+    </div>
+  </form>
+
+
+  <ion-item *ngFor="let user of allUsers | async | select : 'allUsers'">
+    {{ user.first_name }} &nbsp; {{user.last_name}}
+    <ion-icon name="trash" item-end (click)="deleteUser(user.id)"></ion-icon>
+  </ion-item>
 </ion-content>
