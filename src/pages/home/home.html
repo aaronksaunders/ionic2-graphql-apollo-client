@@ -12,19 +12,29 @@
     <ion-list>
       <ion-item>
         <ion-label floating>First Name</ion-label>
-        <ion-input type="text" required [(ngModel)]="model.first_name" name="first_name" id="first_name"></ion-input>
+        <ion-input type="text" required  ngModel name="first_name" id="first_name"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Last Name</ion-label>
-        <ion-input type="text" required [(ngModel)]="model.last_name" name="last_name" id="last_name"></ion-input>
+        <ion-input type="text" required  ngModel name="last_name" id="last_name"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating> Email Address </ion-label>
-        <ion-input type="email" [(ngModel)]="model.email" name="email" id="email" email></ion-input>
+        <ion-input type="email"  ngModel name="email" id="email" email></ion-input>
       </ion-item>
+
+      <ion-item >
+        <ion-select name="company" id="company"  ngModel="Pick Company" class="company-selector">
+          <ion-option selected disabled>Pick Company</ion-option>
+          <ion-option *ngFor="let company of allCompanies  | async| select : 'allCompanies'   as f " [value]="company">
+            {{company.name}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+
     </ion-list>
     <div padding>
-      <button ion-button (click)="addUserClicked()" [disabled]="!userForm.valid">Add User</button>
+      <button ion-button (click)="addUserClicked(userForm.value)" [disabled]="!userForm.valid">Add User</button>
     </div>
   </form>
 
@@ -33,4 +43,5 @@
     {{ user.first_name }} &nbsp; {{user.last_name}}
     <ion-icon name="trash" item-end (click)="deleteUser(user.id)"></ion-icon>
   </ion-item>
+  {{userForm.value| json}}
 </ion-content>

@@ -5,6 +5,30 @@ import { Apollo, ApolloQueryObservable } from 'apollo-angular';
 import gql from 'graphql-tag';
 
 
+const AllCompanies = gql`
+  query AllCompanies {
+    allCompanies {
+      id
+      name
+    }
+  }
+`;
+
+const AllUsersWithCompany = gql`
+  query AllUsers {
+    allUsers {
+      id
+      first_name
+      last_name
+      company {
+        id
+        name
+      }
+    }
+  }
+`;
+
+
 const AllUsers = gql`
   query AllUsers {
     allUsers {
@@ -17,12 +41,16 @@ const AllUsers = gql`
 
 
 const addUser = gql`
-  mutation addUser($first_name:String!, $last_name:String!, $email:String!) {
-    addUser(first_name: $first_name, last_name: $last_name, email: $email) {
+  mutation addUser($first_name:String!, $last_name:String!, $email:String!, $companyId: ID!) {
+    addUser(first_name: $first_name, last_name: $last_name, email: $email, companyId : $companyId) {
       id
       first_name
       last_name
       email
+      company {
+        id
+        name
+      }
     }
   }
 `;
@@ -43,6 +71,7 @@ export class HomePage implements OnInit {
   title = 'app';
   model: any = {};
   allUsers: ApolloQueryObservable<any>;
+  allCompanies: ApolloQueryObservable<any>;
 
   constructor(public navCtrl: NavController, private apollo: Apollo) {
 
@@ -52,6 +81,12 @@ export class HomePage implements OnInit {
     this.allUsers = this
       .apollo
       .watchQuery({ query: AllUsers });
+
+    // get all the companies for the input form
+
+    this.allCompanies = this
+      .apollo
+      .watchQuery({ query: AllCompanies });
   }
 
 
@@ -84,12 +119,14 @@ export class HomePage implements OnInit {
   }
 
 
-  addUserClicked() {
-    console.log(this.model);
+  addUserClicked(_formValue) {
+    console.log(_formValue);
+
+    let params = Object.assign(_formValue, {companyId : _formValue.company.id})
 
     this.apollo.mutate({
       mutation: addUser,
-      variables: this.model,
+      variables: params,
 
       // this will provide an update of the main AllUsers
       // query so the list gets updated...
