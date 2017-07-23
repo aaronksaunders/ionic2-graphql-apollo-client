@@ -9,17 +9,20 @@ import { HomePage } from '../pages/home/home';
 
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import { ApolloModule } from 'apollo-angular';
+
+
 // by default, this client will send queries to `/graphql` (relative to the URL of your app)
-const client = new ApolloClient({
-  dataIdFromObject: (o: any) => `${o.__typename}-${o.id},`,
-  networkInterface: createNetworkInterface({
-    uri: 'https://aks-graphql-sample1.glitch.me/',
-
-  }),
-});
-
 export function provideClient(): ApolloClient {
-  return client;
+  return new ApolloClient({
+    // see - http://dev.apollodata.com/angular2/cache-updates.html#dataIdFromObject
+    dataIdFromObject: (o: any) => `${o.__typename}-${o.id},`,
+
+    // see - http://dev.apollodata.com/angular2/initialization.html
+    networkInterface: createNetworkInterface({
+      uri: 'https://aks-graphql-sample1.glitch.me/',
+
+    }),
+  });;
 }
 
 
