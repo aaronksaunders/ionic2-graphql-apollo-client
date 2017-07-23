@@ -1,3 +1,5 @@
+# Ionic2 GraphQL Sample Application
+
 This is a starter project for [Ionic 2](http://ionicframework.com/docs/) with [GraphQL](http://graphql.org/) 
 
 This sample application integrating Ionic2 with GraphQL using the [Apollo Client for Angular2](http://dev.apollodata.com/angular2/)
