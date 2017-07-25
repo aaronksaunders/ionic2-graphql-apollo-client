@@ -24,8 +24,8 @@
       </ion-item>
 
       <ion-item >
-        <ion-select name="company" id="company"  ngModel="Pick Company" class="company-selector">
-          <ion-option selected disabled>Pick Company</ion-option>
+        <ion-select name="company" id="company"  class="company-selector" ngModel required>
+          <ion-option disabled value="">Pick Company</ion-option>
           <ion-option *ngFor="let company of allCompanies  | async| select : 'allCompanies'   as f " [value]="company">
             {{company.name}}
           </ion-option>
@@ -43,5 +43,5 @@
     {{ user.first_name }} &nbsp; {{user.last_name}}
     <ion-icon name="trash" item-end (click)="deleteUser(user.id)"></ion-icon>
   </ion-item>
-  <!-- {{userForm.value| json}} -->
+  {{userForm.value| json}}
 </ion-content>

@@ -72,6 +72,10 @@ export class HomePage implements OnInit {
   model: any = {};
   allUsers: ApolloQueryObservable<any>;
   allCompanies: ApolloQueryObservable<any>;
+  defaultCompany = {
+    id : null,
+    name : 'Pick Company'
+  }
 
   constructor(public navCtrl: NavController, private apollo: Apollo) {
 
