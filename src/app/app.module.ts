@@ -19,7 +19,7 @@ export function provideClient(): ApolloClient {
 
     // see - http://dev.apollodata.com/angular2/initialization.html
     networkInterface: createNetworkInterface({
-      uri: 'https://aks-graphql-sample1.glitch.me/',
+      uri: 'https://aks-graphql-sample1.glitch.me/graphql',
 
     }),
   });;
