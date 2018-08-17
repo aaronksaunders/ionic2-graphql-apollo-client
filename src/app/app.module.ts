@@ -7,23 +7,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
-import { ApolloClient, createNetworkInterface } from 'apollo-client';
-import { ApolloModule } from 'apollo-angular';
+import { ApolloClient } from 'apollo-client';
+import { ApolloModule, Apollo } from 'apollo-angular';
+import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import gql from 'graphql-tag';
+import { HttpClientModule } from '@angular/common/http';
 
-
-// by default, this client will send queries to `/graphql` (relative to the URL of your app)
-export function provideClient(): ApolloClient {
-  return new ApolloClient({
-    // see - http://dev.apollodata.com/angular2/cache-updates.html#dataIdFromObject
-    dataIdFromObject: (o: any) => `${o.__typename}-${o.id},`,
-
-    // see - http://dev.apollodata.com/angular2/initialization.html
-    networkInterface: createNetworkInterface({
-      uri: 'https://aks-graphql-sample1.glitch.me/graphql',
-
-    }),
-  });;
-}
 
 
 @NgModule({
@@ -34,7 +24,9 @@ export function provideClient(): ApolloClient {
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    ApolloModule.forRoot(provideClient)
+    HttpClientModule,
+    HttpLinkModule,
+    ApolloModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -47,4 +39,14 @@ export function provideClient(): ApolloClient {
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(
+    apollo: Apollo,
+    httpLink: HttpLink
+  ) {
+    apollo.create({
+      link: httpLink.create({ uri: 'https://aks-graphql-sample1.glitch.me/graphql' }),
+      cache: new InMemoryCache()
+    });
+  }
+ }

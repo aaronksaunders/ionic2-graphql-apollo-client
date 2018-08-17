@@ -39,7 +39,7 @@
   </form>
 
 
-  <ion-item *ngFor="let user of allUsers | async | select : 'allUsers'">
+  <ion-item *ngFor="let user of allUsers | async ">
     {{ user.first_name }} &nbsp; {{user.last_name}}
     <ion-icon name="trash" item-end (click)="deleteUser(user.id)"></ion-icon>
   </ion-item>
