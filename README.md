@@ -1,3 +1,8 @@
+# UPDATE - Ionic4 GraphQL Sample Application
+Starting to update this project here
+- https://github.com/aaronksaunders/ionic4-angular6-gql/tree/master
+
+
 # Ionic2 GraphQL Sample Application
 
 This is a starter project for [Ionic 2](http://ionicframework.com/docs/) with [GraphQL](http://graphql.org/) 
